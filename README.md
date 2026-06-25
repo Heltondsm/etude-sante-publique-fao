@@ -1,4 +1,4 @@
-# 🌍 Sous-nutrition mondiale — Analyse des données FAO
+# 🌍 Sous-nutrition mondiale : Analyse des données FAO
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)
@@ -7,7 +7,7 @@
 ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Completed-22c55e?style=flat-square)
 
-528 millions de personnes sous-alimentées en 2017. Le monde produit pourtant assez pour 94% de la population. 4 datasets FAO, 11 analyses, une conclusion nette : **le problème n'est pas la quantité produite — c'est la distribution.**
+528 millions de personnes sous-alimentées en 2017. Le monde produit pourtant assez pour 94% de la population. 4 datasets FAO, 11 analyses, une conclusion nette : **le problème n'est pas la quantité produite, c'est la distribution.**
 
 ---
 
@@ -291,9 +291,9 @@ Data Analyst | 10 ans d'expérience Business (retail + e-commerce) → Reconvers
 
 ## 🔗 Autres projets
 
-- [Prévision SARIMA des ventes e-commerce](https://github.com/Heltondsm/ecommerce-sales-analysis-sarima) — Séries temporelles, grid search sur 64 modèles, RMSE ±12%
-- [Exploration SQL — Portefeuille assurances habitation](https://github.com/Heltondsm/sql-assurances-habitation) — 50K+ contrats, jointures, agrégations, segmentation géographique
-- [Performance e-commerce — Le Grand Marché](https://github.com/Heltondsm/analyse-ventes-ecommerce) — Excel, KPIs, trafic ×30, segmentation 2 profils
+- [Prévision SARIMA des ventes e-commerce](https://github.com/Heltondsm/ecommerce-sales-analysis-sarima), Séries temporelles, grid search sur 64 modèles, RMSE ±12%
+- [Exploration SQL, Portefeuille assurances habitation](https://github.com/Heltondsm/sql-assurances-habitation), 50K+ contrats, jointures, agrégations, segmentation géographique
+- [Performance e-commerce, Le Grand Marché](https://github.com/Heltondsm/analyse-ventes-ecommerce), Excel, KPIs, trafic ×30, segmentation 2 profils
 
 ---
 

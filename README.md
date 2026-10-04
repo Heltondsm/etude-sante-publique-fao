@@ -1,4 +1,4 @@
-# 🌍 Sous-nutrition mondiale : analyse des données FAO
+# 🌍 Sous-nutrition mondiale : un enjeu de répartition, analyse des données FAO
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)

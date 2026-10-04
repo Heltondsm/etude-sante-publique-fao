@@ -1,4 +1,4 @@
-# 🌍 Sous-nutrition mondiale : Analyse des données FAO
+# 🌍 Sous-nutrition mondiale : analyse des données FAO
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white)
@@ -7,26 +7,19 @@
 ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Completed-22c55e?style=flat-square)
 
-528 millions de personnes sous-alimentées en 2017. Le monde produit pourtant assez pour 94% de la population. 4 datasets FAO, 11 analyses, une conclusion nette : **le problème n'est pas la quantité produite, c'est la distribution.**
+528 millions de personnes sous-alimentées en 2017, alors que la production mondiale suffit à nourrir **94,3 % de la population**. 4 jeux de données de la FAO croisés pour arriver à une conclusion nette : **la faim est un problème de répartition, pas de quantité.**
 
 ---
 
-## 📖 Contexte
+## 📖 Le problème
 
-Mission d'analyse pour la FAO (Organisation des Nations Unies pour l'Alimentation et l'Agriculture). L'objectif : comprendre les mécanismes de la sous-nutrition mondiale à partir des données de production, disponibilité alimentaire et aide internationale.
-
-**La question :** Est-ce qu'on manque de nourriture, ou est-ce un problème de répartition ?
+La FAO veut comprendre les mécanismes de la sous-nutrition dans le monde, pour mieux orienter son action. La question centrale : **manque-t-on de nourriture, ou est-elle mal répartie ?**
 
 ---
 
-## 🎯 Objectif de l'analyse
+## 🛠️ Ma solution
 
-Analyser les données FAO 2017 pour :
-- Identifier les pays les plus touchés par la sous-nutrition
-- Calculer si la production mondiale est suffisante
-- Comprendre où passe réellement la nourriture produite
-- Évaluer l'efficacité de l'aide alimentaire internationale
-- Formuler des recommandations actionnables
+Un notebook Python qui croise 4 jeux de données de 2017 : population, disponibilité alimentaire, aide alimentaire et sous-nutrition. Pour chaque question, un calcul, un graphique et une conclusion.
 
 ---
 
@@ -34,125 +27,56 @@ Analyser les données FAO 2017 pour :
 
 ### 1️⃣ L'ampleur du problème
 
-**7,01% de la population mondiale en sous-nutrition = 528 millions de personnes**
+**7,01 % de la population mondiale en sous-nutrition, soit 528 millions de personnes.**
 
-Top 3 des pays les plus touchés :
-- 🇭🇹 **Haïti** : 47,4%
-- 🇰🇵 **Corée du Nord** : 45,6%
-- 🇲🇬 **Madagascar** : 40,3%
+Les 3 pays les plus touchés en proportion : **Haïti, la Corée du Nord et Madagascar**, tous au-dessus de 40 %.
 
-### 2️⃣ La production mondiale est-elle suffisante ?
-
-**OUI.** Le monde produit assez pour nourrir **7,1 milliards de personnes** (94,3% de la population).
-
-Même en ne comptant que les végétaux, on pourrait nourrir **5,87 milliards** (78%).
+### 2️⃣ La production suffit à nourrir presque tout le monde
 
 ```python
-# Calcul de la capacité théorique mondiale
-seuil_fao = 2940  # kcal par personne par jour
-production_totale_kcal = dispo_alimentaire['Valeur'].sum()
-personnes_nourries = production_totale_kcal / (seuil_fao * 365)
-
-print(f"Capacité : {personnes_nourries/1e9:.2f} milliards de personnes")
-# Résultat : 7.1 milliards (94,3% de la population)
+# Calcul du nombre d'humains pouvant être nourris
+total_dispo_kcal = df_pop_dispo_2017["dispo_kcal"].sum()
+nb_possible_humains_nourris = (total_dispo_kcal / kcal_par_personne)
+# Résultat : 7 115 300 894 personnes, soit 94,3 % de la population
 ```
 
-### 3️⃣ Alors où passe la nourriture ?
+Avec un besoin de 2 940 kcal par personne et par jour, la nourriture disponible en 2017 couvre **7,1 milliards de personnes**. Les seuls produits végétaux en couvriraient **5,87 milliards**, soit 78 %.
 
-**Seulement 49,3% de la production va à l'alimentation humaine.**
-
-Le reste se répartit ainsi :
-- 🥩 **36,1% des céréales** → Alimentation animale
-- 🏭 **22,4%** → Traitement industriel
-- 🗑️ **4,6%** → Pertes et gaspillage
-- 🌱 **1,6%** → Semences
+### 3️⃣ Une grande partie des céréales ne nourrit pas les humains
 
 ```python
-# Analyse de l'utilisation des céréales
-cereales = dispo_alimentaire[dispo_alimentaire['Produit'].str.contains('Céréales')]
-utilisation = cereales.groupby('Élément')['Valeur'].sum()
-
-# Résultat clé :
-# Nourriture humaine : 42,9%
-# Nourriture animale : 36,1%
-# → Les animaux mangent presque autant de céréales que les humains
+aliments_animaux = df_cereales["Aliments pour animaux"].sum()
+disponibilite = df_cereales["Disponibilité intérieure"].sum()
+proportion_animaux = aliments_animaux / disponibilite * 100
+# Résultat : 36 % des céréales disponibles vont à l'alimentation animale
 ```
 
-### 4️⃣ Le paradoxe de l'exportation
+**36 % des céréales** servent à nourrir les animaux, presque autant que la part destinée aux humains (43 %).
 
-**Cas de la Thaïlande :**
-- Produit 30,2 milliards de kg de manioc
-- En exporte **83%**
-- Résultat : **8,67% de sa population en sous-nutrition**
+### 4️⃣ Produire beaucoup ne suffit pas à nourrir sa population
 
-**Produire beaucoup ≠ nourrir sa population.**
+La **Thaïlande** produit 30,2 milliards de kg de manioc et en exporte **83 %**, alors que **8,67 %** de sa population est sous-alimentée.
 
-### 5️⃣ L'aide alimentaire va-t-elle aux bons pays ?
+### 5️⃣ L'aide alimentaire ne va pas aux pays de la faim chronique
 
-**NON.** Les 3 pays qui reçoivent le plus d'aide (Syrie, Éthiopie, Yémen) n'apparaissent **pas** dans le top 10 de la sous-nutrition chronique.
-
-L'aide répond aux crises et conflits, pas à la faim structurelle.
-
-```python
-# Top 10 sous-nutrition vs Top 10 aide alimentaire
-top_sous_nutrition = ['Haiti', 'North Korea', 'Madagascar', 'Zambia', ...]
-top_aide = ['Syria', 'Ethiopia', 'Yemen', 'South Sudan', ...]
-
-# Intersection : 0 pays en commun dans le top 5
-```
+Les pays qui reçoivent le plus d'aide (la Syrie, l'Éthiopie, le Yémen) n'ont **aucun point commun** avec le top 10 des pays les plus touchés par la sous-nutrition. L'aide répond aux crises et aux conflits, pas à la faim structurelle.
 
 ---
 
-## 💡 Conclusion
+## 💡 Recommandations pour la FAO
 
-> **Le problème de la faim dans le monde n'est PAS un problème de production, mais de répartition.**
-
-**Les preuves :**
-1. Production mondiale suffisante pour 94,3% de la population
-2. Seulement 49% de la production destinée aux humains
-3. 36% des céréales servent à nourrir les animaux
-4. Des pays producteurs exportent massivement malgré leur sous-nutrition interne
-5. L'aide alimentaire ne cible pas les pays en faim chronique
-
----
-
-## 📋 Recommandations pour la FAO
-
-### 🚨 Court terme (0-12 mois)
-
-**1. Rediriger l'aide alimentaire**
-- Cibler les pays >35% de sous-nutrition chronique (Haïti, Corée du Nord, Madagascar)
-- Stabiliser les flux d'aide (actuellement très irréguliers d'une année à l'autre)
-
-### 🎯 Moyen terme (1-3 ans)
-
-**2. Politiques d'export responsable**
-- Taxer les exportations alimentaires depuis les pays >10% de sous-nutrition
-- Exemple : La Thaïlande devrait réduire ses exports de manioc de 83% à 50%
-
-**3. Optimiser la chaîne alimentaire**
-- Réduire l'utilisation des céréales pour l'alimentation animale (de 36% à 25%)
-- Effet : Libère assez de nourriture pour nourrir **150 millions de personnes**
-
-### 🌱 Long terme (3-5 ans)
-
-**4. Transition alimentaire mondiale**
-- Promouvoir l'alimentation végétale directe (plus efficace énergétiquement)
-- Investir dans l'agriculture locale des pays en sous-nutrition
-
-**5. Réduction des pertes**
-- Programme de réduction des pertes post-récolte (actuellement 4,6%)
-- Formation des agriculteurs aux techniques de conservation
+1. **Orienter une partie de l'aide vers les pays en faim chronique**, comme Haïti, la Corée du Nord et Madagascar, en plus des zones de crise
+2. **Encourager les pays exportateurs touchés par la sous-nutrition** à garder une part de leur production pour leur population
+3. **Réduire la part des céréales destinées aux animaux** au profit de l'alimentation humaine
+4. **Investir dans l'agriculture locale** et la réduction des pertes après récolte
 
 ---
 
 ## 🛠️ Technologies utilisées
 
-- **Python 3.9+** : langage de programmation
-- **Pandas** : manipulation et analyse de données
-- **Matplotlib** : visualisations graphiques
-- **Seaborn** : graphiques statistiques avancés
-- **Jupyter Notebook** : environnement de développement
+- **Python** · **Pandas** : manipulation et analyse des données
+- **Matplotlib** · **Seaborn** : graphiques
+- **Jupyter Notebook**
 
 ---
 
@@ -160,121 +84,25 @@ top_aide = ['Syria', 'Ethiopia', 'Yemen', 'South Sudan', ...]
 
 ```
 .
-├── README.md                            # Documentation du projet
-├── analyse_sous_nutrition_mondiale.ipynb # Notebook Jupyter complet
-└── data/                                 # Datasets FAO 2017
-    ├── population.csv                    # Population par pays
-    ├── dispo_alimentaire.csv             # Disponibilité alimentaire
-    ├── aide_alimentaire.csv              # Aide alimentaire 2013-2017
-    └── sous_nutrition.csv                # Taux de sous-nutrition
+├── README.md
+├── analyse_sous_nutrition_mondiale.ipynb   # le notebook complet
+└── data/                                    # données FAO 2017
+    ├── population.csv
+    ├── dispo_alimentaire.csv
+    ├── aide_alimentaire.csv
+    └── sous_nutrition.csv
 ```
 
 ---
 
-## 🚀 Installation et utilisation
-
-### Prérequis
-
-```bash
-Python 3.9+
-```
-
-### Installation des dépendances
-
-```bash
-pip install pandas matplotlib seaborn jupyter
-```
-
-### Lancer le notebook
+## 🚀 Lancer le notebook
 
 ```bash
 git clone https://github.com/Heltondsm/etude-sante-publique-fao.git
 cd etude-sante-publique-fao
+pip install pandas matplotlib seaborn jupyter
 jupyter notebook analyse_sous_nutrition_mondiale.ipynb
 ```
-
----
-
-## 📊 Aperçu du code
-
-### Calcul de la sous-nutrition mondiale
-
-```python
-# Chargement des données
-population = pd.read_csv('data/population.csv')
-sous_nutrition = pd.read_csv('data/sous_nutrition.csv')
-
-# Jointure des datasets
-df_2017 = pd.merge(
-    population[population['Année'] == 2017],
-    sous_nutrition[sous_nutrition['Année'] == 2017],
-    on='Zone'
-)
-
-# Calcul des personnes sous-nourries
-df_2017['Personnes_sous_nourries'] = (
-    df_2017['Population'] * df_2017['Pourcentage'] / 100
-)
-
-# Agrégation mondiale
-total_sous_nutrition = df_2017['Personnes_sous_nourries'].sum()
-total_population = df_2017['Population'].sum()
-taux_mondial = (total_sous_nutrition / total_population) * 100
-
-print(f"Taux mondial de sous-nutrition : {taux_mondial:.2f}%")
-# Résultat : 7.01%
-```
-
-### Top 10 des pays les plus touchés
-
-```python
-# Tri par taux de sous-nutrition décroissant
-top_10 = df_2017.nlargest(10, 'Pourcentage')[['Zone', 'Pourcentage']]
-
-# Visualisation
-import matplotlib.pyplot as plt
-
-plt.figure(figsize=(12, 6))
-plt.barh(top_10['Zone'], top_10['Pourcentage'], color='#e74c3c')
-plt.xlabel('Pourcentage de sous-nutrition (%)')
-plt.title('Top 10 des pays les plus touchés (2017)')
-plt.gca().invert_yaxis()
-plt.show()
-```
-
-### Analyse de l'utilisation des céréales
-
-```python
-# Filtrer les céréales
-cereales = dispo_alimentaire[
-    dispo_alimentaire['Produit'].str.contains('Céréales', na=False)
-]
-
-# Grouper par utilisation
-utilisation = cereales.groupby('Élément')['Valeur'].sum()
-
-# Camembert
-plt.pie(utilisation, labels=utilisation.index, autopct='%1.1f%%')
-plt.title('Utilisation des céréales mondiales')
-plt.show()
-```
-
----
-
-## 📈 Compétences démontrées
-
-### Techniques Data
-- ✅ Manipulation de données avec Pandas (merge, groupby, filtering)
-- ✅ Nettoyage et harmonisation de 4 datasets FAO
-- ✅ Calculs statistiques et agrégations multi-niveaux
-- ✅ Visualisations impactantes (barplots, pie charts, scatter plots)
-- ✅ Storytelling avec les données
-
-### Business acumen
-- ✅ Traduction d'une question business en analyse technique
-- ✅ Identification de paradoxes (exportations massives malgré sous-nutrition)
-- ✅ Recommandations actionnables basées sur les données
-- ✅ Communication claire de résultats complexes
 
 ---
 
@@ -291,9 +119,9 @@ Data Analyst / Data Engineer | 10 ans d'expérience business (retail et e-commer
 
 ## 🔗 Autres projets
 
-- [Tendances du streaming musical : tests statistiques et Prophet](https://github.com/Heltondsm/analyse-streaming-musical), 114 000 morceaux Spotify, 3 tests avec leur taille d'effet, prévision confrontée à un modèle naïf
-- [Pipeline dbt : profils sociodémographiques](https://github.com/Heltondsm/dbt-demographics-pipeline), Snowflake et DuckDB, 26 tests, reproductible en une commande
-- [Audit données catalogue : e-commerce vins](https://github.com/Heltondsm/python-audit-donnees-catalogue), 3 sources réconciliées, 9 anomalies, Pareto 20/80
+- [Tableau de bord Power BI : portefeuille de projets](https://github.com/Heltondsm/powerbi-portefeuille-projets-rls), 104 projets dans 52 pays, sécurité au niveau des lignes sur 3 rôles, 25 mesures DAX
+- [Audit données catalogue : e-commerce vins](https://github.com/Heltondsm/python-audit-donnees-catalogue), 3 sources réconciliées, 9 anomalies, 276 859 € de stock valorisé
+- [Tendances du streaming musical](https://github.com/Heltondsm/analyse-streaming-musical), 114 000 morceaux, tests statistiques et calendrier de sortie
 
 ---
 

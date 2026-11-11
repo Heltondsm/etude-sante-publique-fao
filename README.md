@@ -106,6 +106,21 @@ jupyter notebook analyse_sous_nutrition_mondiale.ipynb
 
 ---
 
+## 📈 Compétences démontrées
+
+### Préparation des données
+- ✅ 4 jeux de données FAO croisés (population, disponibilité, aide alimentaire, sous-nutrition)
+- ✅ Unités harmonisées : kcal par personne et par jour, milliers de tonnes, millions d'habitants
+
+### Analyse
+- ✅ Ratios à l'échelle mondiale : part de la population nourrie, part des céréales pour les animaux
+- ✅ Comparaisons par pays : les plus touchés, les exportateurs, les destinataires de l'aide
+
+### Restitution
+- ✅ Une conclusion nette appuyée par des chiffres, et 4 recommandations pour la FAO
+
+---
+
 ## 📧 Contact
 
 **Helton Dos Santos Moreira**
@@ -114,6 +129,7 @@ Data Analyst | 10 ans d'expérience business (retail et e-commerce)
 - 📧 Email : heltonmail8@gmail.com
 - 💼 LinkedIn : [in/helton-dsm-data](https://linkedin.com/in/helton-dsm-data)
 - 🐙 GitHub : [Heltondsm](https://github.com/Heltondsm)
+- 🌐 Portfolio : [heltondsm.github.io](https://heltondsm.github.io/)
 
 ---
 
